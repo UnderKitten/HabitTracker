@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Projects\\C#\\HabitTracker\\HabitTracker\\HabitTracker.csproj": {}
+    "E:\\Projects\\CSharp\\HabitTrackerGit\\HabitTracker\\HabitTracker\\HabitTracker.csproj": {}
   },
   "projects": {
-    "E:\\Projects\\C#\\HabitTracker\\HabitTracker\\HabitTracker.csproj": {
+    "E:\\Projects\\CSharp\\HabitTrackerGit\\HabitTracker\\HabitTracker\\HabitTracker.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Projects\\C#\\HabitTracker\\HabitTracker\\HabitTracker.csproj",
+        "projectUniqueName": "E:\\Projects\\CSharp\\HabitTrackerGit\\HabitTracker\\HabitTracker\\HabitTracker.csproj",
         "projectName": "HabitTracker",
-        "projectPath": "E:\\Projects\\C#\\HabitTracker\\HabitTracker\\HabitTracker.csproj",
+        "projectPath": "E:\\Projects\\CSharp\\HabitTrackerGit\\HabitTracker\\HabitTracker\\HabitTracker.csproj",
         "packagesPath": "C:\\Users\\alien\\.nuget\\packages\\",
-        "outputPath": "E:\\Projects\\C#\\HabitTracker\\HabitTracker\\obj\\",
+        "outputPath": "E:\\Projects\\CSharp\\HabitTrackerGit\\HabitTracker\\HabitTracker\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\alien\\AppData\\Roaming\\NuGet\\NuGet.Config"
