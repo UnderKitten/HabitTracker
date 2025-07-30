@@ -1,5 +1,6 @@
 using HabitTracker.Data;
 using HabitTracker.Model;
+using HabitTracker.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace HabitTracker.Endpoints;
@@ -20,18 +21,18 @@ public static class HabitEndpoints
         });
 
         // Get a single habit by id
-        routes.MapGet("/habits/{id}", async (int id, HabitContext db) =>
+        routes.MapGet("/habits/{id:int}", async (int id, HabitContext db) =>
             await db.Habits.FindAsync(id) is Habit habit
                 ? Results.Ok(habit)
                 : Results.NotFound());
 
         // Update an existing habit 
-        routes.MapPut("/habits/{id}", async (int id, Habit updatedHabit, HabitContext db) =>
+        routes.MapPut("/habits/{id:int}", async (int id, Habit updatedHabit, HabitContext db) =>
         {
-            Habit habit = await db.Habits.FindAsync(id);
-            if (habit == null)
+            var (habit, error) = await HabitHelper.FindHabitOrNotFoundAsync(db, id);
+            if (error != null)
             {
-                return Results.NotFound();
+                return error;
             }
 
             habit.Title = updatedHabit.Title;
@@ -43,31 +44,48 @@ public static class HabitEndpoints
         });
 
         // Delete a habit
-        routes.MapDelete("/habits/{id}", async (int id, HabitContext db) =>
+        routes.MapDelete("/habits/{id:int}", async (int id, HabitContext db) =>
         {
-            Habit habit = await db.Habits.FindAsync(id);
-            if (habit == null)
+            var (habit, error) = await HabitHelper.FindHabitOrNotFoundAsync(db, id);
+            if (error != null)
             {
-                return Results.NotFound();
+                return error;
             }
 
             db.Habits.Remove(habit);
             await db.SaveChangesAsync();
             return Results.NoContent();
         });
-        
+
         // Add a habit entry
-        routes.MapPost("/habits/{habitsId}/entries", async (int habitId, HabitEntry habitEntry, HabitContext db) =>
+        routes.MapPost("/habits/{id:int}/entries", async (int id, HabitEntry habitEntry, HabitContext db) =>
         {
-            Habit habit = await db.Habits.FindAsync(habitId);
-            if (habit == null)
+            var (habit, error) = await HabitHelper.FindHabitOrNotFoundAsync(db, id);
+            if (error != null)
             {
-                return Results.NotFound("Habit not found");
+                return error;
             }
-            habitEntry.HabitId = habitId;
+
+            DateTime entryDate = habitEntry.Date.Date;
+
+            bool alreadyMarkedDone = await db.HabitEntries.AnyAsync(e =>
+                e.HabitId == id && e.Date.Date == entryDate);
+
+            if (alreadyMarkedDone)
+            {
+                return Results.Conflict($"Habit entry for {entryDate.ToShortDateString()} already exists.");
+            }
+
+            habitEntry.HabitId = id;
+            habitEntry.Date = entryDate;
             db.HabitEntries.Add(habitEntry);
             await db.SaveChangesAsync();
-            return Results.Created($"/habits/{habitId}/entries/{habitEntry.Id}", habitEntry);
+
+            return Results.Created($"/habits/{id}/entries/{habitEntry.Id}", habitEntry);
         });
+        
+        // Get all entries for a habit
+        routes.MapGet("/habits/{id:int}/entries", async (int id, HabitContext db) =>
+            await db.HabitEntries.Where(e => e.HabitId == id).ToListAsync());
     }
 }
