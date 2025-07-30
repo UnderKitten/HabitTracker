@@ -1,9 +1,10 @@
 using HabitTracker.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace HabitTracker.Data;
 
-public class HabitContext : DbContext
+public class HabitContext : IdentityDbContext
 {
     public HabitContext(DbContextOptions<HabitContext> options) : base(options)
     {
