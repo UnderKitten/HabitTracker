@@ -15,13 +15,27 @@ public static class HabitEndpoints
         //routes.MapGet("/habits", async (HabitContext db) => await db.Habits.ToListAsync());
         routes.MapGet("/habits", [Authorize] async (HabitContext db, HttpContext http) =>
         {
-            var userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string? userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier);
             return await db.Habits.Where(h => h.UserId == userId).ToListAsync();
         });
 
         // Add a habit to the database
-        routes.MapPost("/habits", async (Habit habit, HabitContext db) =>
+        routes.MapPost("/habits", [Authorize] async (HabitContext db, HttpContext http, CreateHabitDto dto) =>
         {
+            string? userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userId == null)
+            {
+                return Results.BadRequest("User was not found");
+            }
+
+            Habit habit = new Habit
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                CreatedAt = dto.CreatedAt ?? DateTime.UtcNow,
+                UserId = userId
+            };
+
             db.Habits.Add(habit);
             await db.SaveChangesAsync();
             return Results.Created($"/habits/{habit.Id}", habit);
@@ -90,9 +104,11 @@ public static class HabitEndpoints
 
             return Results.Created($"/habits/{id}/entries/{habitEntry.Id}", habitEntry);
         });
-        
+
         // Get all entries for a habit
         routes.MapGet("/habits/{id:int}/entries", async (int id, HabitContext db) =>
             await db.HabitEntries.Where(e => e.HabitId == id).ToListAsync());
     }
+
+    private record CreateHabitDto(string Title, string? Description, DateTime? CreatedAt);
 }
