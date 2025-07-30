@@ -18,7 +18,7 @@ public class Habit
 public class HabitEntry
 {
     public int Id { get; set; }
-    public string HabitId { get; set; }
+    public int HabitId { get; set; }
     public DateTime Date { get; set; }
     public bool Done { get; set; }
 }

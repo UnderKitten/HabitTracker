@@ -1,4 +1,5 @@
 using HabitTracker.Data;
+using HabitTracker.Endpoints;
 using HabitTracker.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,15 +34,6 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-// Get all habits
-app.MapGet("/habits", async (HabitContext db) => await db.Habits.ToListAsync());
-
-// Add a habit to the database
-app.MapPost("/habits", async (Habit habit, HabitContext db) =>
-{
-    db.Habits.Add(habit);
-    await db.SaveChangesAsync();
-    return Results.Created($"/habits/{habit.Id}", habit);
-});
+app.MapHabitsEndpoints();
 
 app.Run();
