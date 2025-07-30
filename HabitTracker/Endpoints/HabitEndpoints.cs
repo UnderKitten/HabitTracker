@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using HabitTracker.Data;
 using HabitTracker.Model;
 using HabitTracker.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace HabitTracker.Endpoints;
@@ -10,7 +12,12 @@ public static class HabitEndpoints
     public static void MapHabitsEndpoints(this IEndpointRouteBuilder routes)
     {
         // Get all habits
-        routes.MapGet("/habits", async (HabitContext db) => await db.Habits.ToListAsync());
+        //routes.MapGet("/habits", async (HabitContext db) => await db.Habits.ToListAsync());
+        routes.MapGet("/habits", [Authorize] async (HabitContext db, HttpContext http) =>
+        {
+            var userId = http.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return await db.Habits.Where(h => h.UserId == userId).ToListAsync();
+        });
 
         // Add a habit to the database
         routes.MapPost("/habits", async (Habit habit, HabitContext db) =>

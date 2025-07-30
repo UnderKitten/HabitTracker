@@ -495,3 +495,9 @@ E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\obj\Debug\net9.0\re
 E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\obj\Debug\net9.0\HabitTracker.pdb
 E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\obj\Debug\net9.0\HabitTracker.genruntimeconfig.cache
 E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\obj\Debug\net9.0\ref\HabitTracker.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
+E:\Projects\CSharp\HabitTrackerGit\HabitTracker\HabitTracker\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
